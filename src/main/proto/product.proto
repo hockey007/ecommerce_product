@@ -13,7 +13,7 @@ message ProductRequest {
 }
 
 message ProductResponse {
-  bool success = 1;
+  bool error = 1;
   bool valid = 2;
   string message = 3;
 }

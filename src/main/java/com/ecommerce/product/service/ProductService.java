@@ -14,6 +14,7 @@ import product.ProductProto;
 import product.ProductServiceGrpc.ProductServiceImplBase;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,10 +22,18 @@ import java.util.UUID;
 public class ProductService extends ProductServiceImplBase {
 
     @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Autowired
     private InventoryServiceBlockingStub inventoryServiceBlockingStub;
+
+    public List<Product> getProducts() {
+        return productRepository.findAll();
+    }
 
     public void validateProduct(
             ProductProto.ProductRequest productRequest,
@@ -36,15 +45,13 @@ public class ProductService extends ProductServiceImplBase {
         // TODO: refer if we can find using product_id and internal variant_id
         // else fetch only product and check for variant in it's variants
         Optional<Product> optionalProduct = productRepository
-                .findByProductIdAndVariantId(productId, variantId);
+                .findByIdAndVariants_Id(productId, variantId);
 
         ProductProto.ProductResponse productResponse;
 
         if(optionalProduct.isEmpty()) {
-            // TODO: throw exception here
-            // catch it using the set parameters
             productResponse = ProductProto.ProductResponse.newBuilder()
-                    .setSuccess(false)
+                    .setError(true)
                     .setValid(false)
                     .setMessage("Product not found")
                     .build();

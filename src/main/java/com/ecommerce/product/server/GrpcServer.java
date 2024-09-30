@@ -7,6 +7,7 @@ import io.grpc.ServerBuilder;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -17,7 +18,8 @@ public class GrpcServer {
     @Autowired
     private ProductRepository productRepository;
 
-    private final Integer grpcPort = 8079;
+    @Value("${server.grpc.port}")
+    private Integer grpcPort;
 
     private Server server;
 
@@ -29,8 +31,6 @@ public class GrpcServer {
                 .start();
 
         System.out.println("gRPC Server started, listening on port:" + grpcPort);
-
-        // Ensure the server shuts down gracefully
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Shutting down gRPC server...");
             GrpcServer.this.stop();

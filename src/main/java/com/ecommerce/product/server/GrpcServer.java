@@ -1,7 +1,7 @@
 package com.ecommerce.product.server;
 
 import com.ecommerce.product.repository.ProductRepository;
-import com.ecommerce.product.service.ProductService;
+import com.ecommerce.product.service.GrpcProductService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import jakarta.annotation.PostConstruct;
@@ -26,7 +26,7 @@ public class GrpcServer {
     @PostConstruct
     public void start() throws IOException {
         server = ServerBuilder.forPort(grpcPort)
-                .addService(new ProductService(productRepository))
+                .addService(new GrpcProductService())
                 .build()
                 .start();
 

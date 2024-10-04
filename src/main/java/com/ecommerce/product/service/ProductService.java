@@ -20,14 +20,10 @@ import java.util.UUID;
 public class ProductService {
 
     @Autowired
-    private final ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private InventoryServiceBlockingStub inventoryServiceBlockingStub;
-
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     public List<Product> getProducts() {
         return productRepository.findAll();

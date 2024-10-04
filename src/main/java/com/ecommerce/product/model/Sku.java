@@ -1,5 +1,5 @@
 package com.ecommerce.product.model;
 
-public class SKU {
+public class Sku {
 
 }

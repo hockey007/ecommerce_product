@@ -1,12 +1,10 @@
 package com.ecommerce.product.server;
 
-import com.ecommerce.product.repository.ProductRepository;
 import com.ecommerce.product.service.GrpcProductService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +12,6 @@ import java.io.IOException;
 
 @Component
 public class GrpcServer {
-
-    @Autowired
-    private ProductRepository productRepository;
 
     @Value("${server.grpc.port}")
     private Integer grpcPort;
@@ -33,7 +28,7 @@ public class GrpcServer {
         System.out.println("gRPC Server started, listening on port:" + grpcPort);
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("Shutting down gRPC server...");
-            GrpcServer.this.stop();
+            stop();
         }));
     }
 

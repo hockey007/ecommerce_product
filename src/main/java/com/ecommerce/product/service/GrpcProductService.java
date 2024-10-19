@@ -4,13 +4,13 @@ import com.ecommerce.common.ProductRequest;
 import com.ecommerce.common.ProductResponse;
 import com.ecommerce.common.ProductServiceGrpc.ProductServiceImplBase;
 import io.grpc.stub.StreamObserver;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 
 import static java.util.UUID.fromString;
 
+@AllArgsConstructor
 public class GrpcProductService extends ProductServiceImplBase {
 
-    @Autowired
     private ProductService productService;
 
     public void validateProduct(

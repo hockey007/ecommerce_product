@@ -4,6 +4,7 @@ import com.ecommerce.common.CreateInventoryRequest;
 import com.ecommerce.common.InventoryResponse;
 import com.ecommerce.common.InventoryRequest;
 import com.ecommerce.common.ProductResponse;
+import com.ecommerce.product.logger.ProductLogger;
 import com.ecommerce.product.model.Product;
 import com.ecommerce.product.model.Variant;
 import com.ecommerce.product.repository.ProductRepository;
@@ -19,6 +20,8 @@ import java.util.UUID;
 @Service
 public class ProductService {
 
+    private static String CLASS_NAME = "ProductService";
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -32,6 +35,10 @@ public class ProductService {
     public ProductResponse validateProduct(UUID productId, UUID variantId) {
         Optional<Product> optionalProduct = productRepository
                 .findByIdAndVariants_Id(productId, variantId);
+
+        String METHOD_NAME = "validateProduct";
+        ProductLogger.logInfo(CLASS_NAME, METHOD_NAME, "PRODUCT VALIDATION REQUEST RECEIVED : "
+                + "ProductId : " + productId + ", VariantId : " + variantId);
 
         ProductResponse.Builder productResponse;
         if (optionalProduct.isEmpty()) {
